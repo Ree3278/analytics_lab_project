@@ -1,7 +1,22 @@
 from trend_pipeline.adapters import PlatformAdapter
+from trend_pipeline.base import FrameExtractorInterface
 from trend_pipeline.models import PipelineConfig
 from trend_pipeline.pipeline import TrendPipeline
 from trend_pipeline.processors import AnatomyMapper, DataStash, DeadLetterQueue, FrameExtractor, QualityAnalyst
+
+
+class DummyExtractor(FrameExtractorInterface):
+    @property
+    def name(self) -> str:
+        return "dummy_extractor"
+
+    def extract_frames(self, video_path: str, interval: int) -> list[dict]:
+        del video_path, interval
+        return [
+            {"id": 0, "sharpness": 160.0, "keypoints": 14},
+            {"id": 1, "sharpness": 90.0, "keypoints": 15},
+            {"id": 2, "sharpness": 170.0, "keypoints": 3},
+        ]
 
 
 def test_pipeline_emits_golden_frames() -> None:
@@ -12,7 +27,7 @@ def test_pipeline_emits_golden_frames() -> None:
     pipeline = TrendPipeline(
         video_path="videos/a.mp4",
         config_settings=config,
-        frame_extractor=FrameExtractor(),
+        frame_extractor=DummyExtractor(),
         quality_analyst=QualityAnalyst(config.blur_threshold),
         anatomy_mapper=AnatomyMapper(config.min_garment_keypoints),
         data_stash=stash,
@@ -23,6 +38,7 @@ def test_pipeline_emits_golden_frames() -> None:
     results = pipeline.run(metadata)
 
     assert results
+    assert len(results) == 1
     assert not dlq.items
 
 

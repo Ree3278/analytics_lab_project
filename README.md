@@ -7,6 +7,17 @@ Python OOD scaffold for industrial video framing with:
 - Batch decorator for multi-video processing
 - Dead-letter queue for discarded videos
 
+## Enable vision backends
+
+```bash
+uv sync --group vision
+```
+
+Notes:
+- `FrameExtractor` uses OpenCV for decode and `ffprobe` (if installed) to prefer I-frames.
+- `AnatomyMapper` supports `backend=\"mediapipe\"`, `backend=\"yolo\"`, or `backend=\"auto\"`.
+- MediaPipe is only installed automatically for Python `<3.13` in this project config.
+
 ## Run example
 
 ```bash

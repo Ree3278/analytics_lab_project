@@ -15,7 +15,10 @@ if __name__ == "__main__":
         config_settings=config,
         frame_extractor=FrameExtractor(fps_target=1.5),
         quality_analyst=QualityAnalyst(blur_threshold=config.blur_threshold),
-        anatomy_mapper=AnatomyMapper(min_garment_keypoints=config.min_garment_keypoints),
+        anatomy_mapper=AnatomyMapper(
+            min_garment_keypoints=config.min_garment_keypoints,
+            backend="auto",
+        ),
         data_stash=stash,
         dead_letter_queue=dlq,
     )
