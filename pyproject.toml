@@ -4,27 +4,6 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
-
-[build-system]
-requires = ["hatchling>=1.27.0"]
-build-backend = "hatchling.build"
-
-[dependency-groups]
-dev = [
-    "pytest>=8.3.5",
+dependencies = [
+    "scrapingbee>=2.0.2",
 ]
-vision = [
-    "opencv-python>=4.11.0.86",
-    "ultralytics>=8.3.0",
-    "mediapipe>=0.10.21; python_version < '3.13'",
-]
-
-[tool.uv]
-default-groups = ["dev"]
-
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/trend_pipeline"]
